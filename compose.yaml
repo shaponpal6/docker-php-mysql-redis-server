@@ -1,0 +1,52 @@
+version: '3.7'
+services:
+  php:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./index.php:/var/www/html/index.php
+    depends_on:
+      - db
+    # environment:
+      # MYSQL_HOST: mysql
+      # MYSQL_ROOT_PASSWORD: example
+    networks:
+      - mynetwork
+    command: sh -c "sleep 2 && ls index.php | entr -rn php -S 0.0.0.0:80 -t /var/www/html"
+
+  db:
+    image: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    networks:
+      - mynetwork
+    # command: >
+    #   sh -c "while ! mysqladmin ping -hlocalhost --silent; do sleep 1; done && mysql -uroot -pexample -e 'CREATE DATABASE IF NOT EXISTS test_db'"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    # environment:
+    #   PMA_HOST: mysql
+    #   PMA_PORT: 3306
+    #   MYSQL_ROOT_PASSWORD: example
+    networks:
+      - mynetwork
+  
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
