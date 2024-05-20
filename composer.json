@@ -1,0 +1,15 @@
+{
+    "name": "shapon/docker-php-mysql-redis-server",
+    "autoload": {
+        "psr-4": {
+            "Shapon\\DockerPhpMysqlRedisServer\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "shaponpal",
+            "email": "shaponpal24@gmail.com"
+        }
+    ],
+    "require": {}
+}
